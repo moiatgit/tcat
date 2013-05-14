@@ -23,7 +23,19 @@ Other considerations:
 
     This pursues to avoid puting two frequently coupled letters on keys to be presed by the same finger.
 
-* I like to use vim editor and I don't want to give up just for using a new layout. While the new layout will have most of the problems also present in Dvorak layout, I'm somehow forcing some decisions in order to keep reasonably consistent the positions for one-pos movement keys (hjkl)
+* I'd like to keep mute keys (e.g. the ones that generate accents) and other
+  special keys (e.g. ç, numbers, etc) on qwerty place. I don't want to mess
+  with them when I have to learn the new layout.
+
+* I like to use vim editor and I don't want to give up just for using a new
+  layout. While the new layout will have most of the problems also present in
+  Dvorak layout, I'm somehow forcing some decisions in order to keep reasonably
+  consistent the positions for one-pos movement keys (hjkl)
+
+* I also do some amount of programming and I'd like to improve my poor
+  performance with Spanish-like layouts, specially for {}[]\<\>. While these
+  symbols shouldn't appear between the main keys, I'd like to find out some
+  remapping for them.
 
 If you're interested in the project, you're WELCOME to join/clone/fork/...
 
@@ -53,9 +65,23 @@ Altres consideracions:
 
     - freqüència de les combinacions de parells de lletres a cada fitxer processat
 
-      això pretén evitar col·locar dues lletres que apareixen freqüentment seguides en posicions que requereixin ser premudes pel mateix dit
+      això pretén evitar col·locar dues lletres que apareixen freqüentment
+      seguides en posicions que requereixin ser premudes pel mateix dit
 
-* M'agrada fer servir l'editor vim, i no vull deixar de fer-ho per canviar de disposició de teclat. Encara que la nova disposició presentarà problemes similars amb l'ús de vim, als que ja té passar-se a Dvorak, he pres algunes decisions expressament per a aconseguir mantenir una certa consistència en la posició de les tecles de moviment (hjkl).
+* Voldria mantenir les tecles mudes (com ara les que generen els accents) i
+  d'altres d'especials (ex. ç, nombres, etc.) allà on les té qwerty. No voldria
+  haver de barallar-me amb elles quan comenci a aprendre la nova disposició.
+
+* M'agrada fer servir l'editor vim, i no vull deixar de fer-ho per canviar de
+  disposició de teclat. Encara que la nova disposició presentarà problemes
+  similars amb l'ús de vim, als que ja té passar-se a Dvorak, he pres algunes
+  decisions expressament per a aconseguir mantenir una certa consistència en la
+  posició de les tecles de moviment (hjkl).
+
+* També faig programació i m'agradaria millorar els meus resultats quan escric
+  sobre una disposició tipus espanyola/catalana de qwerty, especialment amb els
+  símbols {}[]\<\>. Tot i que no pretenc que aquests símbols apareguin entre
+  les tecles principals, voldria trobar alguna manera de reassignar-los.
 
 Si estàs interessat/da en el projecte, considera't convidat/da a participar/clonar/etc...
 
