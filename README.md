@@ -11,7 +11,7 @@ Other considerations:
 
 * I write also in other languages. I've calculated roughly that I write 60% in Catalan, 30% in Spanish and the rest mostly in English. Therefore, it is more than possible that you find other layouts closer to optimal for Catalan than mine.
 
-* I've processed a fair amount of corpus in all three languages and for different subjects. As stats remain reasonably consistent when adding new corpuses, I've accepted momentary my current findings.
+* I've processed a fair amount of corpus in all three languages and for different subjects. As stats remain reasonably consistent when adding new corpora, I've accepted momentary my current findings.
 
 * The elements I've considered are:
 
