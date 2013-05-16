@@ -8,16 +8,16 @@ import nltk
 def genera_from_raw(raw, fd):
     """ genera els estats de raw al fitxer """
     fdist = nltk.FreqDist(ch.lower() for ch in raw if ch not in " \n")
-    for k in fdist:
-        fd.write("%s,%s\n"%(k,fdist[k]))
+    for k,v in fdist.iteritems():
+        fd.write("%s,%s\n"%(k,v))
 
 def genera_parells_from_raw(raw, fd):
     """ genera els estats de raw (freqüència de parelles de lletres)
     al fitxer fd """
     parells = [ vs for vs in re.findall(r'[a-z]{2}', raw.lower()) ]
     f = nltk.FreqDist(parells)
-    for k in f:
-        fd.write("%s,%s\n"%(k,f[k]))
+    for k,v in f.iteritems():
+        fd.write("%s,%s\n"%(k,v))
 
 def genera_estats(fitxer_origen, fitxer_destinacio, codificacio=""):
     if codificacio == "":
