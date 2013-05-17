@@ -5,6 +5,12 @@ List of TODO's
 
 Consider the following list of ToDo's for this project
 
+#. review
+   https://help.ubuntu.com/community/Howto%3A%20Custom%20keyboard%20layout%20definitions
+   to learn which are the customization possibilities
+
+#. include fixed keys possibility for numbers and so
+
 #. define a class that allows mapping a comfort key
 
 #. define a class that allows mapping a layout
@@ -24,7 +30,7 @@ Consider the following list of ToDo's for this project
    layouts (ordered by better to worse)
 
 #. develop a program that, given comfort key map, a list of layouts
-   and a test, returns the confort score of the text for each layout
+   and a test, returns the comfort score of the text for each layout
    (ordered by better to worse)
 
 #. develop a program that is able to calculate the comfort score the
