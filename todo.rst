@@ -11,6 +11,8 @@ Consider the following list of ToDo's for this project
 
 #. include fixed keys possibility for numbers and so
 
+#. define a class that allows mapping preferred fingers for key
+
 #. define a class that allows mapping a comfort key
 
 #. define a class that allows mapping a layout
@@ -35,3 +37,7 @@ Consider the following list of ToDo's for this project
 
 #. develop a program that is able to calculate the comfort score the
    text from a given url for a given list of layouts.
+
+#. program that, given a layout, generates xkb files
+
+#. deb pack that installs the new layout on a debian box
