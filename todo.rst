@@ -21,6 +21,10 @@ Currently:
     -   tcat.v01 improves qwerty by 17,74%
     -   tcat.v01 improves dvorak.es by 12,83%
 
+    There's a test version that improves tcat.v01 by placing most
+    frequent symbol (dot) at home row. But pair scores are still
+    bellow dvorak.
+
     Most of the code in util/ should be revised if anyone wants to
     perform some automated scoring. I'd suggest to use the ods file to
     test further combinations instead.
@@ -33,9 +37,10 @@ Now, the ToDo list include:
 
 #. define further checks that allow discriminate layouts
 
-   - hjkl vim's keys
-
    - pair frequencies
+     get at least dvorak score
+
+   - programming symbols accessibility () {} []
 
 #. program that, given a layout, generates xkb files
 
