@@ -5,6 +5,7 @@
 # frequencies obtained from a file
 #
 import sys
+import codecs
 #
 _NUM_OF_KEYS = 35
 #
@@ -16,7 +17,7 @@ class SymbolFreq:
             self.setDefaultFreq()
 
     def loadFreq(self, filename):
-        values = open(filename).read().split()
+        values = codecs.open(filename, "r", "utf-8").read().split()
         freq = dict()
         for i in range(0, _NUM_OF_KEYS*2, 2):
             freq[values[i]]=float(values[i+1])

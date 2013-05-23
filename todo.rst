@@ -2,39 +2,30 @@
 List of TODO's
 ##############
 
+Currently:
 
-Consider the following list of ToDo's for this project
+    I've found that a brute force approach is not suitable for this
+    problem. It would require analysing up to 35! layouts (I won't
+    live that much to see the results)
 
+    Therefore I've decided to take another approach: start working
+    from well known layouts and hand-modify tcat in order to improve
+    it on different subjects.
 
-#. Last point:
+    Current version v01 scores clearly better than qwerty and
+    dvorak.es:
 
-   I was working on a simulation at Layout.py
+    Following computations at util/frequencies.ods:
 
-   Target was to get ConfortKeys.scoreLayout() working but I've
-   found a problem in defining the function. comfort keys are lower
-   the best, but frequencies are higher the best.
+    -   dvorak es improves qwerty by 5,63%
+    -   tcat.v01 improves qwerty by 17,74%
+    -   tcat.v01 improves dvorak es by 12,83%
 
-   The target is to define a formula such as given a low comfort key
-   index the higher the assigned symbol, the best should score (the
-   lowest the best)
+    Most of the code in util/ should be revised if anyone wants to
+    perform some automated scoring. I'd suggest to use the ods file to
+    test further combinations instead.
 
-        comfort index       freq            score
-        -------------       --------        ---------
-        low                 low             high
-        low                 high            low
-        high                low             low
-        high                high            high
-
-   Then apply this formula to ConfortKeys.scoreLayout() and see what
-   happens.
-
-   Layout.main() should keep only a maximum of say 100 best scored layouts.
-
-   It can be hard to compute them, having into account the enormous
-   amount of permutations (35!) Some optimizations should be
-   considered. For example, think about passing the 100th best score.
-   Once the computations of the score of a layout surpass this 100th
-   best score, the layout can be dismissed.
+Now, the ToDo list include:
 
 #. correct *confort* as *comfort* everywhere!
 

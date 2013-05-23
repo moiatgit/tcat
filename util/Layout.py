@@ -13,10 +13,7 @@ _NUM_OF_KEYS = 35
 #
 class KeyboardLayout:
     def __init__(self, symbols):
-        self.numberofkeys = _NUM_OF_KEYS
-        if len(symbols)<> self.numberofkeys:
-            raise
-        self.symbols = symbols
+        self.symbols = symbols[:_NUM_OF_KEYS]
 
     def strsymbols(self):
         return '  ' + '  '.join(self.symbols[:12])   + '\n' +    \
