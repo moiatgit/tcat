@@ -5,19 +5,17 @@
 # It consists on a comfort index for each key in a keyboard
 #
 # Keys considered are (in a qwerty layout):
-#   º1234567890'¡
 #    qwertyuiop`+
 #    asdfghjklñ´ç
 #   <zxcvbnm,.-
 
 # On these premises, keys are numbered from left to right and from top to
 # bottom as follow:
-#   00 01 02 03 04 05 06 07 08 09 10 11 12
-#      13 14 15 16 17 18 19 20 21 22 23 24
-#      25 26 27 28 29 30 31 32 33 34 35 36
-#   37 38 39 40 41 42 43 44 45 46 47
+#      00 01 02 03 04 05 06 07 08 09 10 11
+#      12 13 14 15 16 17 18 19 20 21 22 23
+#      24 25 26 27 28 29 30 31 32 33 34
 
-# Comfort key index can be defined in a text file containing at least 48
+# Comfort key index can be defined in a text file containing at least 35
 # positive integer values (white spaces and extra integers ignored) and will be
 # considered in the corresponding order previously defined.
 #
@@ -30,6 +28,7 @@ import sys, os.path
 #
 class ConfortKeys:
     def __init__(self, filename=None):
+        self.numberofkeys = 35
         if filename:
             self.loadConfortKeys(filename)
         else:
@@ -37,10 +36,10 @@ class ConfortKeys:
 
     def loadConfortKeys(self, filename):
         values = open(filename).read().split()
-        self.keys = dict(enumerate([int(x) for x in values[:48]]))
+        self.keys = dict(enumerate([int(x) for x in values[:self.numberofkeys]]))
 
     def setDefaultConfortKeys(self):
-        self.keys = dict([(x, 0) for x in range(48)])
+        self.keys = dict([(x, 0) for x in range(self.numberofkeys)])
 
     def confortIndex(self, key):
         """ returns the confort index for key """
@@ -57,6 +56,13 @@ class ConfortKeys:
     def keysOfIndex(self, index):
         """ returns the keys that share the index """
         return [ k for k in self.keys if self.keys[k]==index]
+
+    def scoreLayout(self, layout, frequency):
+        """ given a layout and a symbol frequency, 
+        this function computes the confort score based on the
+        confort key indexes """
+
+
 #
 def main():
     """ performs a simple test """

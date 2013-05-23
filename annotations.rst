@@ -9,3 +9,11 @@ Some annotations about project findings
   (e.g. charvolant doesn't include <LSGT> key code.
 
   teclat.odg contains a code name map for 105 keys
+
+* Some possible key sharing
+
+  ñçÑÇ
+
+  -_=
+
+* the number of possible layouts is 35! = 10333147966386144929666651337523200000000
