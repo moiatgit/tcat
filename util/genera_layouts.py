@@ -6,7 +6,7 @@ import sys, time
 from itertools import permutations
 from Layout import KeyboardLayout
 from SymbolFreq import SymbolFreq
-from confortkeys import ConfortKeys
+from comfortkeys import ConfortKeys
 #
 _NUM_OF_KEYS = 35
 _MAX_LAYOUTS = 1000000   # max number of layouts to keep
@@ -32,7 +32,7 @@ def main():
     numlayouts = 0
     symbols = open('keysymbols.dat', 'r').read().split()[:_NUM_OF_KEYS]
     freq = SymbolFreq('frequencies.dat')
-    ckeys = ConfortKeys('confortkeyprefs.dat')
+    ckeys = ConfortKeys('comfortkeyprefs.dat')
     for p in permutations(symbols, _NUM_OF_KEYS):
         npermuts += 1
         layout = KeyboardLayout(p)

@@ -5,14 +5,14 @@
 import sys
 import codecs
 from SymbolFreq import SymbolFreq
-from confortkeys import ConfortKeys
+from comfortkeys import ConfortKeys
 from Layout import KeyboardLayout
 #
 
 #
 def main():
     freq = SymbolFreq('frequencies.dat')
-    ckeys = ConfortKeys('confortkeyprefs.dat')
+    ckeys = ConfortKeys('comfortkeyprefs.dat')
     for l in sys.argv[1:]:
         if l.startswith("layout."):
             symbols = codecs.open(l, "r", "utf-8").read()

@@ -27,8 +27,6 @@ Currently:
 
 Now, the ToDo list include:
 
-#. correct *confort* as *comfort* everywhere!
-
 #. review
    https://help.ubuntu.com/community/Howto%3A%20Custom%20keyboard%20layout%20definitions
    to learn which are the customization possibilities
