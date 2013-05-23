@@ -61,6 +61,13 @@ class ConfortKeys:
         """ given a layout and a symbol frequency, 
         this function computes the confort score based on the
         confort key indexes """
+        score = 0.0
+        for k in self.keys:
+            confort = float(self.keys[k])
+            symbol = layout.symbols[k]
+            freq = float(frequency.freq[symbol])
+            score += 10 * confort * (1 - freq)
+        return score
 
 
 #

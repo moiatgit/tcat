@@ -6,9 +6,10 @@
 #
 import sys
 #
+_NUM_OF_KEYS = 35
+#
 class SymbolFreq:
     def __init__(self, filename=None):
-        self.numberofkeys = 35
         if filename:
             self.loadFreq(filename)
         else:
@@ -16,12 +17,22 @@ class SymbolFreq:
 
     def loadFreq(self, filename):
         values = open(filename).read().split()
+        freq = dict()
+        for i in range(0, _NUM_OF_KEYS*2, 2):
+            freq[values[i]]=float(values[i+1])
+        self.normalize_freqs(freq)
+
+    def normalize_freqs(self, freq):
+        """ given a frequency dict, it normalizes it in a %
+        having the highest frequency a 100% and the lowest a 0% """
+        l = min(freq.values())
+        h = max(freq.values()) - l
         self.freq = dict()
-        for i in range(0, self.numberofkeys, 2):
-            self.freq[values[i]]=values[i+1]
+        for k in freq.keys():
+            self.freq[k] = (freq[k]-l)/h
 
     def setDefaultFreq(self):
-        self.freq = dict([(x, 1.0/self.numberofkeys) for x in range(self.numberofkeys)])
+        self.freq = dict([(x, 1.0/_NUM_OF_KEYS) for x in range(_NUM_OF_KEYS)])
 
 #
 def main():

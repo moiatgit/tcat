@@ -8,9 +8,6 @@
 # directly the key) are considered
 #
 import sys
-import itertools
-import time
-import SymbolFreq, confortkeys
 #
 _NUM_OF_KEYS = 35
 #
@@ -22,22 +19,8 @@ class KeyboardLayout:
         self.symbols = symbols
 
     def strsymbols(self):
-        return '\t' + '\t'.join(self.symbols[:12])   + '\n' +    \
-               '\t' + '\t'.join(self.symbols[12:24]) + '\n' +    \
-               '\t'.join(self.symbols[24:])          + '\n'
+        return '  ' + '  '.join(self.symbols[:12])   + '\n' +    \
+               '  ' + '  '.join(self.symbols[12:24]) + '\n' +    \
+               '  '.join(self.symbols[24:])          + '\n'
 
 #
-def main():
-    symbols = open('keysymbols.dat', 'r').read().split()[:_NUM_OF_KEYS]
-    for p in itertools.permutations(symbols, _NUM_OF_KEYS):
-        layout = KeyboardLayout(p)
-        freq = SymbolFreq.SymbolFreq('frequencies.dat')
-        ckeys = confortkeys.ConfortKeys('confortkeyprefs.dat')
-
-        print layout.strsymbols()
-        print "-"*80
-        time.sleep(1)
-#
-if __name__=="__main__":
-    sys.exit(main())
-
