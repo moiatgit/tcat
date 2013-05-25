@@ -31,17 +31,37 @@ Currently:
 
 Now, the ToDo list include:
 
-#. review
-   https://help.ubuntu.com/community/Howto%3A%20Custom%20keyboard%20layout%20definitions
-   to learn which are the customization possibilities
+#. program that, given a file/url, generates a report on layout
+   performance
 
-#. define further checks that allow discriminate layouts
+   Winner should outperform any other known layout for all the test
+   in Catalan. Whishfully with Castillian and English as bonus
 
-   - pair frequencies
-     get at least dvorak score
+   Currently score_text.py is generating the following ranking
 
+    my ca : tcat_v01, tcat_v03, dvorak_es, tcat_v02, qwerty
+    gen ca: tcat_v03, tcat_v02, tcat_v01, dvorak_es, qwerty
+    es    : tcat_v03, dvorak_es, tcat_v01, tcat_v02, qwerty
+    en    : dvorak_es, tcat_v01, tcat_v02, tcat_v03, qwerty
+
+    It seems that I've done it! However, there're two issues:
+
+    1st. why my ca (my own catalan writings) have worse results on v03
+    than on v01?
+
+    2nd. it is not possible to outperform dvorak_es on English too?
+    Distance is not that bad (always considering old qwerty) but I
+    doubt if really dot is so frequent after all.
+
+#. define further improvings:
+
+   - collapse ñç in one key
    - programming symbols accessibility () {} []
 
 #. program that, given a layout, generates xkb files
 
 #. deb pack that installs the new layout on a debian box
+
+#. training series (at least for typeme)
+
+#. publicity

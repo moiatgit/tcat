@@ -1,5 +1,9 @@
 Some annotations about project findings
 
+#. review
+   https://help.ubuntu.com/community/Howto%3A%20Custom%20keyboard%20layout%20definitions
+   to learn which are the customization possibilities
+
 
 * http://www.charvolant.org/~doug/xkb/html/node5.html at section **Key
   codes** offer a key code mapping that could be useful for naming in
