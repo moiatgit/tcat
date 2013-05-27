@@ -18,30 +18,42 @@ from Layout import KeyboardLayout
 def normalitza_lletra(lletra):
     """ retorna la lletra normalitzada. És a dir, elimina els
     accents, dièresis etc. i converteix tots els caràcters no suportats
-    a espai """
+    a espai.
+    Per les lletres que requereixen composició (ex. à) retorna el parell
+    ['a', '`']"""
     lletra = lletra.lower()
-    if lletra in [u"à", u"á"]:
-        lletra = u'a'
-    elif lletra in [u"è", u"é"]:
-        lletra = u'e'
-    elif lletra in [u'í', u'ï']:
-        lletra = 'i'
-    elif lletra in [u'ò', u'ó']:
-        lletra = u'o'
-    elif lletra in [u'ú', u'ü']:
-        lletra = u'u'
-    elif lletra = u':':
-        lletra = u'.'
-    elif lletra = u';':
-        lletra = u','
-    elif lletra = u'*':
-        lletra = u'+'
-    elif lletra = u'_':
-        lletra = u'-'
-    elif lletra = u'>':
-        lletra = u'<'
-    if not re.match(r'[-+.,<a-z]', lletra):
-        lletra= u' '
+    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû]', lletra):
+        lletra= [u' ']
+    elif lletra == u"à":
+        lletra = [u'`', u'a']
+    elif lletra == u"á":
+        lletra = [u'´', u'a']
+    elif lletra == u"è":
+        lletra = [u'`', u'e']
+    elif lletra ==  u"é":
+        lletra = [u'´', u'e']
+    elif lletra == u'í':
+        lletra = [u'´', u'i']
+    elif lletra == u'ï':
+        lletra = [ u'´', u'i']
+    elif lletra == u'ò':
+        lletra = [u'`', u'o']
+    elif lletra == u'ó':
+        lletra = [u'´', u'o']
+    elif lletra == u'ú':
+        lletra = [u'´', u'u']
+    elif lletra == u'ü':
+        lletra = [u'´', u'u']
+    elif lletra == u':':
+        lletra = [u'.']
+    elif lletra == u';':
+        lletra = [u',']
+    elif lletra == u'*':
+        lletra = [u'+']
+    elif lletra == u'_':
+        lletra = [u'-']
+    elif lletra == u'>':
+        lletra = [u'<']
     return lletra
 #
 def genera_parells(text, layout):
@@ -71,7 +83,7 @@ def analyze_text(layouts, kd, source, text):
 
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
     for l, score in sorted_results:
-        print "%s [%s]: %s"%(source, l, score)
+        print "%s (%s) [%s]: %s"%(source, len(text), l, score)
 #
 def load_layouts():
     """ load all the layouts available at cwd and returns them
@@ -103,7 +115,10 @@ def main():
             except:
                 print "ERROR processing %s url"%f
         if raw:
-            text = [normalitza_lletra(c) for c in raw]
+            text = ""
+            for ch in raw:
+                lletres = normalitza_lletra(ch)
+                text += "".join(lletres)  # awfull performance I know
             analyze_text(layouts, kd, f, text)
 #
 if __name__=="__main__":

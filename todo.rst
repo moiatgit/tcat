@@ -29,29 +29,56 @@ Currently:
     perform some automated scoring. I'd suggest to use the ods file to
     test further combinations instead.
 
-Now, the ToDo list include:
-
-#. program that, given a file/url, generates a report on layout
-   performance
-
-   Winner should outperform any other known layout for all the test
-   in Catalan. Whishfully with Castillian and English as bonus
+I've got a program that, given a file/url, generates a report on layout
+   performance: score_text.py
 
    Currently score_text.py is generating the following ranking
 
-    my ca : tcat_v01, tcat_v03, dvorak_es, tcat_v02, qwerty
-    gen ca: tcat_v03, tcat_v02, tcat_v01, dvorak_es, qwerty
-    es    : tcat_v03, dvorak_es, tcat_v01, tcat_v02, qwerty
-    en    : dvorak_es, tcat_v01, tcat_v02, tcat_v03, qwerty
+$ python score_text.py http://ca.wikipedia.org/wiki/Base_de_dades http://es.wikipedia.org/wiki/Base_de_datos http://en.wikipedia.org/wiki/Database http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es
+http://ca.wikipedia.org/wiki/Base_de_dades [tcat_v04]: 190
+http://ca.wikipedia.org/wiki/Base_de_dades [tcat_v01]: 191
+http://ca.wikipedia.org/wiki/Base_de_dades [tcat_v02]: 206
+http://ca.wikipedia.org/wiki/Base_de_dades [tcat_v03]: 211
+http://ca.wikipedia.org/wiki/Base_de_dades [dvorak_es]: 250
+http://ca.wikipedia.org/wiki/Base_de_dades [qwerty]: 289
+http://es.wikipedia.org/wiki/Base_de_datos [tcat_v04]: 189
+http://es.wikipedia.org/wiki/Base_de_datos [tcat_v01]: 190
+http://es.wikipedia.org/wiki/Base_de_datos [tcat_v02]: 205
+http://es.wikipedia.org/wiki/Base_de_datos [tcat_v03]: 210
+http://es.wikipedia.org/wiki/Base_de_datos [dvorak_es]: 248
+http://es.wikipedia.org/wiki/Base_de_datos [qwerty]: 288
+http://en.wikipedia.org/wiki/Database [tcat_v01]: 188
+http://en.wikipedia.org/wiki/Database [tcat_v04]: 189
+http://en.wikipedia.org/wiki/Database [tcat_v02]: 203
+http://en.wikipedia.org/wiki/Database [tcat_v03]: 209
+http://en.wikipedia.org/wiki/Database [dvorak_es]: 246
+http://en.wikipedia.org/wiki/Database [qwerty]: 283
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [tcat_v04]: 190
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [tcat_v01]: 192
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [tcat_v02]: 210
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [tcat_v03]: 212
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [dvorak_es]: 249
+http://de.wikipedia.org/wiki/Datenbank#Datenbankmanagementsystem [qwerty]: 283
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [tcat_v04]: 192
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [tcat_v01]: 193
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [tcat_v02]: 209
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [tcat_v03]: 213
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [dvorak_es]: 253
+http://fr.wikipedia.org/wiki/Base_de_donn%C3%A9es [qwerty]: 292
 
-    It seems that I've done it! However, there're two issues:
+That is, if there's no further errors, I've got a layout (v04) that is
+improving performance over the rest of layouts for Catalan, Spanish,
+English, German and French!
 
-    1st. why my ca (my own catalan writings) have worse results on v03
-    than on v01?
+Of course, this is more than expected. I'd like to perform some
+further testing so I can dectect any bug that could throw away these,
+by now, impressive results.
 
-    2nd. it is not possible to outperform dvorak_es on English too?
-    Distance is not that bad (always considering old qwerty) but I
-    doubt if really dot is so frequent after all.
+
+Now, the ToDo list include:
+
+#. perform a controlled test (with manual counting) in order to check
+   whether score_text.py is right
 
 #. define further improvings:
 
