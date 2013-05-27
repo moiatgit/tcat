@@ -17,7 +17,7 @@ from Layout import KeyboardLayout
 #
 def normalitza_lletra(lletra):
     """ retorna la lletra normalitzada. És a dir, elimina els
-    accents i dièresis, i converteix tots els caràcters no suportats
+    accents, dièresis etc. i converteix tots els caràcters no suportats
     a espai """
     lletra = lletra.lower()
     if lletra in [u"à", u"á"]:
@@ -30,8 +30,18 @@ def normalitza_lletra(lletra):
         lletra = u'o'
     elif lletra in [u'ú', u'ü']:
         lletra = u'u'
+    elif lletra = u':':
+        lletra = u'.'
+    elif lletra = u';':
+        lletra = u','
+    elif lletra = u'*':
+        lletra = u'+'
+    elif lletra = u'_':
+        lletra = u'-'
+    elif lletra = u'>':
+        lletra = u'<'
     if not re.match(r'[-+.,<a-z]', lletra):
-        lletra=' '
+        lletra= u' '
     return lletra
 #
 def genera_parells(text, layout):

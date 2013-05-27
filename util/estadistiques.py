@@ -3,64 +3,106 @@
 #
 import sys, re
 import codecs
-import nltk
+import operator
 #
-def genera_from_raw(raw, fd):
-    """ genera els estats de raw al fitxer """
-    fdist = nltk.FreqDist(ch.lower() for ch in raw if ch not in " \n")
-    for k,v in fdist.iteritems():
-        fd.write("%s,%s\n"%(k,v))
-
-def genera_parells_from_raw(raw, fd):
-    """ genera els estats de raw (freqüència de parelles de lletres)
-    al fitxer fd """
-    parells = [ vs for vs in re.findall(r'[a-z]{2}', raw.lower()) ]
-    f = nltk.FreqDist(parells)
-    for k,v in f.iteritems():
-        fd.write("%s,%s\n"%(k,v))
-
-def genera_estats(fitxer_origen, fitxer_destinacio, codificacio=""):
-    if codificacio == "":
-        raw = open(fitxer_origen).read()
-        fout = open(fitxer_destinacio, "w")
-    else:
-        raw = codecs.open(fitxer_origen, encoding=codificacio).read()
-        fout = codecs.open(fitxer_destinacio, "w", codificacio)
-
-    genera_from_raw(raw, fout)
-    fout.close()
+from collections import defaultdict
 #
-def genera_parells(fitxer_origen, fitxer_destinacio, codificacio=""):
-    if codificacio == "":
-        raw = open(fitxer_origen).read()
-        fout = open(fitxer_destinacio, "w")
-    else:
-        raw = codecs.open(fitxer_origen, encoding=codificacio).read()
-        fout = codecs.open(fitxer_destinacio, "w", codificacio)
-    genera_parells_from_raw(raw, fout)
-    fout.close()
-
+def normalitza_lletra(lletra):
+    """ retorna la lletra normalitzada. És a dir, elimina els
+    accents, dièresis etc. i converteix tots els caràcters no suportats
+    a espai.
+    Per les lletres que requereixen composició (ex. à) retorna el parell
+    ['a', '`']"""
+    lletra = lletra.lower()
+    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû]', lletra):
+        lletra= [u' ']
+    elif lletra == u"à":
+        lletra = [u'`', u'a']
+    elif lletra == u"á":
+        lletra = [u'´', u'a']
+    elif lletra == u"è":
+        lletra = [u'`', u'e']
+    elif lletra ==  u"é":
+        lletra = [u'´', u'e']
+    elif lletra == u'í':
+        lletra = [u'´', u'i']
+    elif lletra == u'ï':
+        lletra = [ u'´', u'i']
+    elif lletra == u'ò':
+        lletra = [u'`', u'o']
+    elif lletra == u'ó':
+        lletra = [u'´', u'o']
+    elif lletra == u'ú':
+        lletra = [u'´', u'u']
+    elif lletra == u'ü':
+        lletra = [u'´', u'u']
+    elif lletra == u':':
+        lletra = [u'.']
+    elif lletra == u';':
+        lletra = [u',']
+    elif lletra == u'*':
+        lletra = [u'+']
+    elif lletra == u'_':
+        lletra = [u'-']
+    elif lletra == u'>':
+        lletra = [u'<']
+    return lletra
 #
-def obte_continguts(nom_fitxer, codificacio=""):
-    if codificacio == "":
-        raw = open(nom_fitxer).read()
-    else:
-        raw = codecs.open(nom_fitxer, encoding=codificacio).read()
-    return raw
+def genera_parells(text):
+    """ genera els parells de lletres.
+        Elimina parells de la mateixa lletra.
+        Només genera una combinació de cada parell (és a dir
+        les aparicions 'ea' es converteixen a 'ab' """
+    parells = list()
+    for i in range(len(text)-1):
+        x, y = text[i], text[i+1]
+        if u' ' not in [x, y] and x<>y:
+            par = "%s%s"%(x,y) if x < y else "%s%s"%(y,x)
+            parells.append(par)
+    return parells
+#
+def genera_estats(fin, fout):
+    """ genera els estats de cada lletra i de cada parell i 
+    els deixa al fitxer fd """
+    dist_lletres = defaultdict(int)
+    dist_parells = defaultdict(int)
+    ant = list()     # lletres anteriors
+    while True:
+        try:
+            ch = fin.read(1)
+        except:
+            print "WARNING: problem reading a char"
+            continue
+        if not ch:
+            break
+        ant += normalitza_lletra(ch)
+        while (len(ant)>1):
+            lletra = ant.pop(0)
+            if lletra == ' ':
+                continue
+            dist_lletres[lletra] += 1
+            if ant[0] == ' ' or ant[0] == lletra:
+                ant.pop(0)
+            else:
+                par = "%s%s"%( (lletra, ant[0]) if lletra < ant[0] else (ant[0], lletra) )
+                dist_parells[par] += 1
 
-def obte_destinacio(nom_fitxer, codificacio=""):
-    if codificacio == "":
-        fout = open(nom_fitxer, "w")
-    else:
-        fout = codecs.open(nom_fitxer, "w", codificacio)
-    return fout
+    guarda_estats(dist_lletres, fout)
+    guarda_estats(dist_parells, fout)
+#
+def guarda_estats(fdist, fd):
+    """ guarda els estats al fitxer ordenats per freqüència """
+    for k,v in sorted(fdist.iteritems(), key=operator.itemgetter(1), reverse=True):
+        fd.write("%s\t%s\n"%(k,v))
 #
 def main():
-    raw = obte_continguts(sys.argv[1], "utf-8")
-    fd  = obte_destinacio(sys.argv[2], "utf-8")
-    genera_from_raw(raw, fd)
-    genera_parells_from_raw(raw, fd)
-    fd.close()
+    fin = codecs.open(sys.argv[1], "r", encoding="utf-8")
+    fout = codecs.open(sys.argv[2], "w", encoding="utf-8")
+    # fin = open(sys.argv[1], "r")
+    # fout = open(sys.argv[2], "w")
+    genera_estats(fin, fout)
+    fout.close()
+    fin.close()
     return 0
 #
 if __name__=="__main__":
