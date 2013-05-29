@@ -22,38 +22,38 @@ def normalitza_lletra(lletra):
     Per les lletres que requereixen composició (ex. à) retorna el parell
     ['a', '`']"""
     lletra = lletra.lower()
-    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû]', lletra):
+    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû`´]', lletra):
         lletra= [u' ']
     elif lletra == u"à":
-        lletra = [u'`', u'a']
+        lletra = [u'`', 'a']
     elif lletra == u"á":
-        lletra = [u'´', u'a']
+        lletra = [u'´', 'a']
     elif lletra == u"è":
-        lletra = [u'`', u'e']
+        lletra = [u'`', 'e']
     elif lletra ==  u"é":
-        lletra = [u'´', u'e']
+        lletra = [u'´', 'e']
     elif lletra == u'í':
-        lletra = [u'´', u'i']
+        lletra = [u'´', 'i']
     elif lletra == u'ï':
-        lletra = [ u'´', u'i']
+        lletra = [ u'´', 'i']
     elif lletra == u'ò':
-        lletra = [u'`', u'o']
+        lletra = [u'`', 'o']
     elif lletra == u'ó':
-        lletra = [u'´', u'o']
+        lletra = [u'´', 'o']
     elif lletra == u'ú':
-        lletra = [u'´', u'u']
+        lletra = [u'´', 'u']
     elif lletra == u'ü':
-        lletra = [u'´', u'u']
+        lletra = [u'´', 'u']
     elif lletra == u':':
-        lletra = [u'.']
+        lletra = ['.']
     elif lletra == u';':
-        lletra = [u',']
+        lletra = [',']
     elif lletra == u'*':
-        lletra = [u'+']
+        lletra = ['+']
     elif lletra == u'_':
-        lletra = [u'-']
+        lletra = ['-']
     elif lletra == u'>':
-        lletra = [u'<']
+        lletra = ['<']
     return lletra
 #
 def genera_parells(text, layout):
@@ -62,9 +62,10 @@ def genera_parells(text, layout):
     parells = list()
     for i in range(len(text)-1):
         x, y = text[i], text[i+1]
-        index_x = layout.symbols.index(x)
-        index_y = layout.symbols.index(y)
-        parells.append((index_x, index_y))
+        if x <> y and i <> ' ':
+            index_x = layout.symbols.index(x)
+            index_y = layout.symbols.index(y)
+            parells.append((index_x, index_y))
     return parells
 
 def score_layout(layout, kd, text):
