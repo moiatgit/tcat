@@ -28,7 +28,7 @@ def main():
     if len(sys.argv) > 1:
         filename = sys.argv[1]
     else:
-        filename = raw_input("Filename of the comfort key indexes: ")
+        filename = raw_input("Filename of the key distances: ")
     if os.path.isfile(filename):
         kd = KeyDistance(filename)
         print "Loaded %s"%filename
