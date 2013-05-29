@@ -12,19 +12,6 @@ Currently:
     from well known layouts and hand-modify tcat in order to improve
     it on different subjects.
 
-    Current version v01 scores clearly better than qwerty and
-    dvorak.es:
-
-    Following computations at frequencies.ods:
-
-    -   dvorak.es improves qwerty by 5,63%
-    -   tcat.v01 improves qwerty by 17,74%
-    -   tcat.v01 improves dvorak.es by 12,83%
-
-    There's a test version that improves tcat.v01 by placing most
-    frequent symbol (dot) at home row. But pair scores are still
-    bellow dvorak.
-
     Most of the code in util/ should be revised if anyone wants to
     perform some automated scoring. I'd suggest to use the ods file to
     test further combinations instead.

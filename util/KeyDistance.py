@@ -20,8 +20,8 @@ class KeyDistance:
         values = open(filename).read().split()
         triplets = zip(*[iter(values)]*3)
         for t in triplets:
-            self.distances[(int(t[0]), int(t[1]))]=int(t[2])
-            self.distances[(int(t[1]), int(t[0]))]=int(t[2])
+            self.distances[(int(t[0]), int(t[1]))]=float(t[2])
+            self.distances[(int(t[1]), int(t[0]))]=float(t[2])
 #
 def main():
     """ performs a simple test """
