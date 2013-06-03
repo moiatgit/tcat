@@ -28,7 +28,7 @@ class PairFreq:
         sorted by frequency """
         sorted_results = sorted(self.freq[symbol], key=operator.itemgetter(1), reverse=True)
         return sorted_results
-#
+
 def main():
     pf = PairFreq('pair_freq.dat')
     for s, f in pf.freq_of_symbol(sys.argv[1]):

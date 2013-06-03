@@ -8,6 +8,7 @@
 # directly the key) are considered
 #
 import sys
+import codecs
 #
 _NUM_OF_KEYS = 35
 #
@@ -20,4 +21,11 @@ class KeyboardLayout:
                '  ' + '  '.join(self.symbols[12:24]) + '\n' +    \
                '  '.join(self.symbols[24:])          + '\n'
 
+    @staticmethod
+    def from_file(filename):
+        """ returns a KeyboardLayout from the filename
+            Ignores any char bellow 32 in file. """
+        raw = codecs.open(filename, "r", "utf-8").read()
+        symbols = "".join([ ch for ch in raw if ord(ch) > 32 ])
+        return KeyboardLayout(symbols)
 #

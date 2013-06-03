@@ -64,7 +64,7 @@ class ConfortKeys:
         score = 0.0
         for k in self.keys:
             comfort = float(self.keys[k])
-            symbol = layout.symbols[k]
+            symbol = layout.symbols[k+1]    # avoid space
             freq = float(frequency.freq[symbol])
             score += 10 * comfort * (1 - freq)
         return score

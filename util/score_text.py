@@ -118,8 +118,7 @@ def load_layouts():
     in a dict() layout_name:Layout """
     layouts = dict()
     for f in glob("layout.*.dat"):
-        symbols = codecs.open(f, 'r', 'utf-8').read()
-        l = KeyboardLayout(symbols)
+        l = KeyboardLayout.from_file(f)
         m = re.match("layout\.(.*)\.dat", f)
         name = m.group(1)
         layouts[name]=l
