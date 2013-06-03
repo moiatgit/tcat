@@ -61,7 +61,7 @@ def normalitza_lletra(lletra):
     return lletra
 #
 def genera_parells(layout):
-    """ genera els parells de lletres del fitxer i retorna les posicions
+    """ genera els parells de lletres del fitxer i genera les posicions
         corresponents al layout """
     fd = codecs.open(_FILENAME, "r", "utf-8")
     parells = list()
@@ -74,10 +74,9 @@ def genera_parells(layout):
             symbols = layout.symbols
             index_x = symbols.index(prev) if prev in symbols else 0
             index_y = symbols.index(ch) if ch in symbols else 0
-            parells.append((index_x, index_y))
+            yield (index_x, index_y)
         prev = ch
     fd.close()
-    return parells
 
 def score_hand_distrib(hd, k1, k2):
     """ computes and returns whether the two keys belong to the same
@@ -89,9 +88,8 @@ def score_hand_distrib(hd, k1, k2):
     return res
 #
 def score_layout(layout, kd, hd):
-    parells = genera_parells(layout)
     score_distance = score_hands = 0
-    for p in parells:
+    for p in genera_parells(layout):
         score_distance += kd.distances.get(p, 0)
         score_hands += score_hand_distrib(hd, *p)
     return score_distance, score_hands
@@ -102,6 +100,7 @@ def analyze_text(layouts, kd, hd, source):
     results = dict()
     for l in layouts:
         score = score_layout(layouts[l], kd, hd)
+        print "computed for layout %s"%l
         min_distance = min(min_distance, score[0])
         min_hand = min(min_hand, score[1])
         results[l]=score
