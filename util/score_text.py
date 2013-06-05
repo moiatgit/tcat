@@ -60,9 +60,14 @@ def normalitza_lletra(lletra):
         lletra = ['<']
     return lletra
 #
-def genera_parells(layout):
-    """ genera els parells de lletres del fitxer i genera les posicions
-        corresponents al layout """
+def analyze_text(layouts, kd, source):
+    """ creates a report for text considering scores for each layout """
+    # result initialization
+    results = dict()
+    for l in layouts:
+        results[l]=0    # layout: distance
+
+    # process text
     fd = codecs.open(_FILENAME, "r", "utf-8")
     parells = list()
     prev = ' '
@@ -71,47 +76,20 @@ def genera_parells(layout):
         if not ch:
           break
         if ch <> prev and ch <> ' ':
-            symbols = layout.symbols
-            index_x = symbols.index(prev) if prev in symbols else 0
-            index_y = symbols.index(ch) if ch in symbols else 0
-            yield (index_x, index_y)
+            for l in layouts:
+                symbols = layouts[l].symbols
+                index_x = symbols.index(prev) if prev in symbols else 0
+                index_y = symbols.index(ch) if ch in symbols else 0
+                p = (index_x, index_y)
+                results[l] += kd.distances.get(p, 0)
         prev = ch
     fd.close()
 
-def score_hand_distrib(hd, k1, k2):
-    """ computes and returns whether the two keys belong to the same
-    hand """
-    if (min(k1, k2)>0): # 0 key (e.g. space bar) is not considered
-        res = int(not(bool(hd.distrib[k1]) <> bool(hd.distrib[k2])))
-    else:
-        res = 0
-    return res
-#
-def score_layout(layout, kd, hd):
-    score_distance = score_hands = 0
-    for p in genera_parells(layout):
-        score_distance += kd.distances.get(p, 0)
-        score_hands += score_hand_distrib(hd, *p)
-    return score_distance, score_hands
-#
-def analyze_text(layouts, kd, hd, source):
-    """ creates a report for text considering scores for each layout """
-    min_distance = min_hand = sys.maxint
-    results = dict()
-    for l in layouts:
-        score = score_layout(layouts[l], kd, hd)
-        print "computed for layout %s"%l
-        min_distance = min(min_distance, score[0])
-        min_hand = min(min_hand, score[1])
-        results[l]=score
-
+    min_distance = min(results.values())
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
     print "\nSource: %s"%source
     for l, score in sorted_results:
-        score_distance, score_hands = score
-        pcent_distance = 100*(score_distance - min_distance) / min_distance
-        pcent_hand = 100*(score_hands - min_hand) / min_hand if min_hand <> 0 else 0
-        print "\t[%s]:\tdistance=%10s (%0.2f%%)\thands=%s (%4.2f%%)"%(l, score_distance, pcent_distance, score_hands, pcent_hand)
+        print "\t%-9s:\t%s (%0.2f%%)"%(l, score, (score-min_distance)/min_distance)
 #
 def load_layouts():
     """ load all the layouts available at cwd and returns them
@@ -126,7 +104,6 @@ def load_layouts():
 #
 def main():
     kd = KeyDistance('keydistance.dat')
-    hd = HandDistribution('hand_distribution.dat')
     layouts = load_layouts()
     for f in sys.argv[1:]:
         raw = None
@@ -153,7 +130,7 @@ def main():
             tf.close()
             raw = None
             print "Encoded raw"
-            analyze_text(layouts, kd, hd, f)
+            analyze_text(layouts, kd, f)
 #
 if __name__=="__main__":
     sys.exit(main())
