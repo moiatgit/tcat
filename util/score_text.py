@@ -103,7 +103,8 @@ def load_layouts():
     return layouts
 #
 def main():
-    kd = KeyDistance('keydistance.dat')
+    # kd = KeyDistance('keydistance.dat')
+    kd = KeyDistance('pairconfort.dat')
     layouts = load_layouts()
     for f in sys.argv[1:]:
         raw = None
