@@ -89,7 +89,7 @@ def analyze_text(layouts, kd, source):
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
     print "\nSource: %s"%source
     for l, score in sorted_results:
-        print "\t%-9s:\t%s (%0.2f%%)"%(l, score, (score-min_distance)/min_distance)
+        print "\t%-9s:\t%s (%0.2f%%)"%(l, score, 100*(score-min_distance)/min_distance)
 #
 def load_layouts():
     """ load all the layouts available at cwd and returns them
