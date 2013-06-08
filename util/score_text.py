@@ -17,50 +17,9 @@ from Layout import KeyboardLayout
 from HandDistrib import HandDistribution
 from tempfile import NamedTemporaryFile
 #
-_FILENAME="/tmp/fitxer_normalitzat.txt"
+import normalize_text
 #
-def normalitza_lletra(lletra):
-    """ retorna la lletra normalitzada. És a dir, elimina els
-    accents, dièresis etc. i converteix tots els caràcters no suportats
-    a espai.
-    Per les lletres que requereixen composició (ex. à) retorna el parell
-    ['a', '`']"""
-    lletra = lletra.lower()
-    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû`´]', lletra):
-        lletra= [u' ']
-    elif lletra == u"à":
-        lletra = [u'`', 'a']
-    elif lletra == u"á":
-        lletra = [u'´', 'a']
-    elif lletra == u"è":
-        lletra = [u'`', 'e']
-    elif lletra ==  u"é":
-        lletra = [u'´', 'e']
-    elif lletra == u'í':
-        lletra = [u'´', 'i']
-    elif lletra == u'ï':
-        lletra = [ u'´', 'i']
-    elif lletra == u'ò':
-        lletra = [u'`', 'o']
-    elif lletra == u'ó':
-        lletra = [u'´', 'o']
-    elif lletra == u'ú':
-        lletra = [u'´', 'u']
-    elif lletra == u'ü':
-        lletra = [u'´', 'u']
-    elif lletra == u':':
-        lletra = ['.']
-    elif lletra == u';':
-        lletra = [',']
-    elif lletra == u'*':
-        lletra = ['+']
-    elif lletra == u'_':
-        lletra = ['-']
-    elif lletra == u'>':
-        lletra = ['<']
-    return lletra
-#
-def analyze_text(layouts, kd, source):
+def analyze_text(layouts, kd, name, source):
     """ creates a report for text considering scores for each layout """
     # result initialization
     results = dict()
@@ -68,7 +27,7 @@ def analyze_text(layouts, kd, source):
         results[l]=0    # layout: distance
 
     # process text
-    fd = codecs.open(_FILENAME, "r", "utf-8")
+    fd = codecs.open(source, "r", "utf-8")
     parells = list()
     prev = ' '
     while True:
@@ -87,7 +46,7 @@ def analyze_text(layouts, kd, source):
 
     min_distance = min(results.values())
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
-    print "\nSource: %s"%source
+    print "\nSource: %s"%name
     for l, score in sorted_results:
         print "\t%-9s:\t%s (%0.2f%%)"%(l, score, 100*(score-min_distance)/min_distance)
 #
@@ -103,35 +62,13 @@ def load_layouts():
     return layouts
 #
 def main():
-    # kd = KeyDistance('keydistance.dat')
     kd = KeyDistance('pairconfort.dat')
     layouts = load_layouts()
     for f in sys.argv[1:]:
-        raw = None
-        if os.path.isfile(f):
-            try:
-                raw = codecs.open(f, "r", "utf-8").read()
-            except:
-                print "ERROR processing %s file"%f
-        else:
-            try:
-                opener = urllib2.build_opener()
-                opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-                infile = opener.open(f)
-                html = infile.read()
-                soup = BeautifulSoup(html)
-                raw = soup.body.getText()
-            except:
-                print "ERROR processing %s url"%f
-        if raw:
-            print "Loaded raw"
-            tf = codecs.open(_FILENAME, "w", "utf-8")
-            for ch in raw:
-                tf.write("".join(normalitza_lletra(ch)))
-            tf.close()
-            raw = None
-            print "Encoded raw"
-            analyze_text(layouts, kd, f)
+        dest = normalize_text.compose_dest_filename(f)
+        if not os.path.exists(dest):
+            normalize_text.save_normalized(dest, f)
+        analyze_text(layouts, kd, f, dest)
 #
 if __name__=="__main__":
     sys.exit(main())
