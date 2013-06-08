@@ -19,36 +19,64 @@ from tempfile import NamedTemporaryFile
 #
 import normalize_text
 #
+_SCORED_PATH = 'scored/'    # path for the scored results
+#
+def compose_scored_result(url, layout):
+    """ composes the filename for the source and the layout results """
+    pref = ''
+    if url.startswith('http://'):
+        pref = os.path.dirname(url).lstrip('http://').replace('/','.')+'.'
+    name = os.path.basename(url)
+    dest = "%s%s%s.%s"%(_SCORED_PATH,pref,name,layout)
+    return dest
+#
 def analyze_text(layouts, kd, name, source):
     """ creates a report for text considering scores for each layout """
     # result initialization
+    size = os.stat(source).st_size
+    pending_layouts = []
     results = dict()
     for l in layouts:
-        results[l]=0    # layout: distance
+        result_filename = compose_scored_result(name, l)
+        if os.path.exists(result_filename):
+            results[l]=float(open(result_filename).read())
+        else:
+            results[l]=0    # layout: distance
+            pending_layouts.append(l)
 
     # process text
-    fd = codecs.open(source, "r", "utf-8")
-    parells = list()
-    prev = ' '
-    while True:
-        ch = fd.read(1)
-        if not ch:
-          break
-        if ch <> prev and ch <> ' ':
-            for l in layouts:
-                symbols = layouts[l].symbols
-                index_x = symbols.index(prev) if prev in symbols else 0
-                index_y = symbols.index(ch) if ch in symbols else 0
-                p = (index_x, index_y)
-                results[l] += kd.distances.get(p, 0)
-        prev = ch
-    fd.close()
+    if len(pending_layouts)>0:
+        fd = codecs.open(source, "r", "utf-8")
+        parells = list()
+        prev = ' '
+        while True:
+            ch = fd.read(1)
+            if not ch:
+              break
+            if ch <> prev and ch <> ' ':
+                for l in pending_layouts:
+                    symbols = layouts[l].symbols
+                    index_x = symbols.index(prev) if prev in symbols else 0
+                    index_y = symbols.index(ch) if ch in symbols else 0
+                    p = (index_x, index_y)
+                    results[l] += kd.distances.get(p, 0)
+            prev = ch
+        fd.close()
 
-    min_distance = min(results.values())
+    for l in pending_layouts:
+        result_filename = compose_scored_result(name, l)
+        score = results[l]
+        fd = open(result_filename, "w")
+        fd.write("%-9s"%score)
+        fd.close()
+
+    max_score = max(results.values())
+    min_score = min(results.values())
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
-    print "\nSource: %s"%name
+    print "\nSource: %s (%s bytes)"%(name, size)
     for l, score in sorted_results:
-        print "\t%-9s:\t%s (%0.2f%%)"%(l, score, 100*(score-min_distance)/min_distance)
+        rel_score = 100 * (score - min_score) / (max_score - min_score)
+        print "\t%-9s:\t%s%10.2f%%"%(l, score, rel_score)
 #
 def load_layouts():
     """ load all the layouts available at cwd and returns them

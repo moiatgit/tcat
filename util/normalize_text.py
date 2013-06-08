@@ -17,7 +17,7 @@ from Layout import KeyboardLayout
 from HandDistrib import HandDistribution
 from tempfile import NamedTemporaryFile
 #
-_SOURCE_PATH="src/"
+_NORMALIZED_TEXT_PATH="normalized/"
 #
 def normalitza_lletra(lletra):
     """ retorna la lletra normalitzada. És a dir, elimina els
@@ -75,7 +75,7 @@ def compose_dest_filename(url):
     if url.startswith('http://'):
         pref = os.path.dirname(url).lstrip('http://').replace('/','.')+'.'
     name = os.path.basename(url)
-    dest = "%s%s%s.normalized"%(_SOURCE_PATH,pref,name)
+    dest = "%s%s%s.normalized"%(_NORMALIZED_TEXT_PATH,pref,name)
     return dest
 #
 def get_raw(url):
