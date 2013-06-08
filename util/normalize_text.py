@@ -8,6 +8,7 @@ import sys
 import urllib2
 import os, codecs, re
 import operator
+import io
 #
 from glob import glob
 #
@@ -101,10 +102,9 @@ def get_raw(url):
 #
 def save_normalized(dest, source):
     """ saves normalized source text into destination file """
-    tf = codecs.open(dest, "w", "utf-8")
-    for lletra in normalitza_text(get_raw(source)):
-        tf.write(lletra)
-    tf.close()
+    with io.open(dest, "w") as tf:
+        for lletra in normalitza_text(get_raw(source)):
+            tf.write(unicode(lletra))
 
 def main():
     for f in sys.argv[1:]:

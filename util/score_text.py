@@ -7,6 +7,7 @@
 import sys
 import urllib2
 import os, codecs, re
+import io
 import operator
 #
 from glob import glob
@@ -46,22 +47,21 @@ def analyze_text(layouts, kd, name, source):
 
     # process text
     if len(pending_layouts)>0:
-        fd = codecs.open(source, "r", "utf-8")
-        parells = list()
-        prev = ' '
-        while True:
-            ch = fd.read(1)
-            if not ch:
-              break
-            if ch <> prev and ch <> ' ':
-                for l in pending_layouts:
-                    symbols = layouts[l].symbols
-                    index_x = symbols.index(prev) if prev in symbols else 0
-                    index_y = symbols.index(ch) if ch in symbols else 0
-                    p = (index_x, index_y)
-                    results[l] += kd.distances.get(p, 0)
-            prev = ch
-        fd.close()
+        with io.open(source, "r") as fd:
+            parells = list()
+            prev = ' '
+            while True:
+                ch = fd.read(1)
+                if not ch:
+                  break
+                if ch <> prev and ch <> ' ':
+                    for l in pending_layouts:
+                        symbols = layouts[l].symbols
+                        index_x = symbols.index(prev) if prev in symbols else 0
+                        index_y = symbols.index(ch) if ch in symbols else 0
+                        p = (index_x, index_y)
+                        results[l] += kd.distances.get(p, 0)
+                prev = ch
 
     for l in pending_layouts:
         result_filename = compose_scored_result(name, l)
