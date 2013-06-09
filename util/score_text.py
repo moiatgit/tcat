@@ -70,12 +70,11 @@ def analyze_text(layouts, kd, name, source):
         fd.write("%-9s"%score)
         fd.close()
 
-    max_score = max(results.values())
     min_score = min(results.values())
     sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
     print "\nSource: %s (%s bytes)"%(name, size)
     for l, score in sorted_results:
-        rel_score = 100 * (score - min_score) / (max_score - min_score)
+        rel_score = 100 * (score - min_score) / min_score
         print "\t%-9s:\t%s%10.2f%%"%(l, score, rel_score)
 #
 def load_layouts():
