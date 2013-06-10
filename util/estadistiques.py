@@ -1,52 +1,13 @@
 #! /usr/bin/env python
 # encoding: utf-8
 #
-import sys, re
+import sys, os
 import codecs
 import operator
 #
 from collections import defaultdict
 #
-def normalitza_lletra(lletra):
-    """ retorna la lletra normalitzada. És a dir, elimina els
-    accents, dièresis etc. i converteix tots els caràcters no suportats
-    a espai.
-    Per les lletres que requereixen composició (ex. à) retorna el parell
-    ['a', '`']"""
-    lletra = lletra.lower()
-    if not re.match(u'[-+.,<a-zñçàáèéíïòóúû]', lletra):
-        lletra= [u' ']
-    elif lletra == u"à":
-        lletra = [u'`', u'a']
-    elif lletra == u"á":
-        lletra = [u'´', u'a']
-    elif lletra == u"è":
-        lletra = [u'`', u'e']
-    elif lletra ==  u"é":
-        lletra = [u'´', u'e']
-    elif lletra == u'í':
-        lletra = [u'´', u'i']
-    elif lletra == u'ï':
-        lletra = [ u'´', u'i']
-    elif lletra == u'ò':
-        lletra = [u'`', u'o']
-    elif lletra == u'ó':
-        lletra = [u'´', u'o']
-    elif lletra == u'ú':
-        lletra = [u'´', u'u']
-    elif lletra == u'ü':
-        lletra = [u'´', u'u']
-    elif lletra == u':':
-        lletra = [u'.']
-    elif lletra == u';':
-        lletra = [u',']
-    elif lletra == u'*':
-        lletra = [u'+']
-    elif lletra == u'_':
-        lletra = [u'-']
-    elif lletra == u'>':
-        lletra = [u'<']
-    return lletra
+import normalize_text
 #
 def genera_parells(text):
     """ genera els parells de lletres.
@@ -66,6 +27,7 @@ def genera_estats(fin, fout):
     els deixa al fitxer fd """
     dist_lletres = defaultdict(int)
     dist_parells = defaultdict(int)
+    dist_ternes  = defaultdict(int)
     ant = list()     # lletres anteriors
     while True:
         try:
@@ -75,34 +37,39 @@ def genera_estats(fin, fout):
             continue
         if not ch:
             break
-        ant += normalitza_lletra(ch)
-        while (len(ant)>1):
-            lletra = ant.pop(0)
-            if lletra == ' ':
-                continue
-            dist_lletres[lletra] += 1
-            if ant[0] == ' ' or ant[0] == lletra:
-                ant.pop(0)
-            else:
-                par = "%s%s"%( (lletra, ant[0]) if lletra < ant[0] else (ant[0], lletra) )
+        if ch == ' ':
+            ant = list()    # buida la llista
+        else:
+            ant.append(ch)
+            dist_lletres[ch] += 1
+            l = len(ant)
+            if (l > 1):
+                par = (min(ant[-2:]), max(ant[-2:]))
                 dist_parells[par] += 1
-
+            if (l == 3):
+                dist_ternes[tuple(ant)] += 1
+                ant = list()
     guarda_estats(dist_lletres, fout)
     guarda_estats(dist_parells, fout)
+    guarda_estats(dist_ternes, fout)
 #
 def guarda_estats(fdist, fd):
     """ guarda els estats al fitxer ordenats per freqüència """
     for k,v in sorted(fdist.iteritems(), key=operator.itemgetter(1), reverse=True):
-        fd.write("%s\t%s\n"%(k,v))
+        for i in k:
+            print i.encode('utf-8'),'\t',
+        print "\t%s"%v
 #
 def main():
-    fin = codecs.open(sys.argv[1], "r", encoding="utf-8")
-    fout = codecs.open(sys.argv[2], "w", encoding="utf-8")
-    # fin = open(sys.argv[1], "r")
-    # fout = open(sys.argv[2], "w")
-    genera_estats(fin, fout)
-    fout.close()
-    fin.close()
+    for f in sys.argv[1:]:
+        dest = normalize_text.compose_dest_filename(f)
+        if not os.path.exists(dest):
+            print "XXX Cal normalitzar"
+            normalize_text.save_normalized(dest, f)
+        fin = codecs.open(dest, "r", encoding="utf-8")
+        print "Stats of file: %s"%f
+        genera_estats(fin, sys.stdout)
+        fin.close()
     return 0
 #
 if __name__=="__main__":
