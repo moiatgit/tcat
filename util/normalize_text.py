@@ -57,8 +57,10 @@ def normalitza_lletra(lletra):
         lletra = ['-']
     elif lletra == '>':
         lletra = ['<']
+    elif lletra in [u'ç', u'ñ']:
+        pass
     elif not re.match('[-+.,<a-z`´]', lletra):
-        lletra = ' '
+        lletra = '\n'
     return lletra
 #
 def normalitza_text(raw):

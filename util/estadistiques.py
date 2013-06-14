@@ -9,19 +9,6 @@ from collections import defaultdict
 #
 import normalize_text
 #
-def genera_parells(text):
-    """ genera els parells de lletres.
-        Elimina parells de la mateixa lletra.
-        Només genera una combinació de cada parell (és a dir
-        les aparicions 'ea' es converteixen a 'ab' """
-    parells = list()
-    for i in range(len(text)-1):
-        x, y = text[i], text[i+1]
-        if u' ' not in [x, y] and x<>y:
-            par = "%s%s"%(x,y) if x < y else "%s%s"%(y,x)
-            parells.append(par)
-    return parells
-#
 def genera_estats(fin, fout):
     """ genera els estats de cada lletra i de cada parell i 
     els deixa al fitxer fd """
@@ -64,7 +51,6 @@ def main():
     for f in sys.argv[1:]:
         dest = normalize_text.compose_dest_filename(f)
         if not os.path.exists(dest):
-            print "XXX Cal normalitzar"
             normalize_text.save_normalized(dest, f)
         fin = codecs.open(dest, "r", encoding="utf-8")
         print "Stats of file: %s"%f
